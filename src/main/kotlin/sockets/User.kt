@@ -1,28 +1,30 @@
 package org.example.sockets
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.net.ServerSocket
 import java.util.*
 
 
 class User(private val id: Int) {
-
-    fun startServer(port: Int = 8080) {
-        ServerSocket(port).run(socketLogic())
-    }
-
-    private fun socketLogic(): (ServerSocket) -> Unit {
-        return { it ->
-            println("Server started on port ${it.localPort}")
-            val client = it.accept()
-            println("Client connected : ${client.inetAddress.hostAddress}")
-            val scanner = Scanner(client.getInputStream())
-            while (scanner.hasNextLine()) {
-                val line = scanner.nextLine()
-                println(id)
-                println(line) // run some logic on user with id=id
-                client.getOutputStream().write("Hello, $line".toByteArray())
-            }
-            client.close()
+    suspend fun listenLoop(port: Int) = withContext(Dispatchers.IO) {
+        val server = ServerSocket(port)
+        println("Server started on port ${server.localPort}")
+        val client = server.accept()
+        println(
+            "Client connected to server on port ${server.localPort}: ${
+                client.inetAddress.hostAddress
+            }"
+        )
+        val scanner = Scanner(client.getInputStream())
+        while (scanner.hasNextLine()) {
+            val line = scanner.nextLine()
+            println("We got a message from user $id: $line")
+            client.getOutputStream().write("Hello, $line".toByteArray())
+            client.getOutputStream().flush()
         }
+        client.close()
     }
 }
+
+

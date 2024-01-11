@@ -1,75 +1,56 @@
 package org.example.logic
 
-import kotlin.math.min
-import kotlin.math.max
+class Ship(
+    private var ship: List<Cell> = emptyList(),
+    private var area: List<Cell> = emptyList(),
+    private var mark: Int = 0,
+) {
+    constructor(x1: Int, y1: Int, x2: Int, y2: Int) : this() {
+        for (x in x1..x2) for (y in y1..y2) ship += Cell(x, y)
+        listOf(x1 - 1, x2 + 1).forEach { x ->
+            (y1 - 1..y2 + 1).forEach { y -> area += Cell(x, y) }
+        }
+        listOf(y1 - 1, y2 + 1).forEach { y ->
+            (x1 - 1..x2 + 1).forEach { x -> area += Cell(x, y) }
+        }
+    }
 
-class Ship(private var ship: List<Cell>, private var area: List<Cell>, private var mark: Int = 0) {
+
+    private fun allCells(): List<Cell> = ship + area
+
+
     fun isAlive(): Boolean {
-        return getLen() != mark
+        return getSize() != mark
     }
 
-    fun getLen(): Int {
-        return ship.size
-    }
+    fun getSize(): Int = ship.size
 
-    fun getMarkedShipCnt(): Int {
-        return mark
-    }
+    fun getMarkedCellsCount(): Int = mark
 
-    fun getMarkedShip(): List<Cell> {
-        val res: List<Cell> = emptyList()
-        for (t in ship)
-            if (t.getMarked())
-                res.addLast(t)
-        return res
-    }
+    fun getMarkedCells(): List<Cell> = ship.filter { cell -> cell.isMarked() }
 
-    fun getMarkedArea(): List<Cell> {
-        val res: List<Cell> = emptyList()
-        for (t in area)
-            if (t.getMarked())
-                res.addLast(t)
-        return res
-    }
+    fun getMarkedArea(): List<Cell> = area.filter { cell -> cell.isMarked() }
 
-    fun contains(x: Int, y: Int): Boolean {
-        val cell = Cell(x, y)
-        for (t in ship)
-            if (t == cell)
-                return true
-        return false
-    }
+    fun contains(x: Int, y: Int): Boolean = contains(Cell(x, y))
 
-    infix fun contains(cell: Cell): Boolean {
-        for (t in ship)
-            if (t == cell)
-                return true
-        return false
-    }
+    infix fun contains(cell: Cell): Boolean = ship.contains(cell)
 
-    infix fun conflicts(v: Ship): Boolean {
-        for (t in ship)
-            if (v contains t)
-                return true
-        for (t in area)
-            if (v contains t)
-                return true
-        return false
-    }
+    infix fun conflicts(v: Ship): Boolean =
+        allCells().any { cell -> v contains cell }
 
-    fun marked(cell: Cell) {
+    fun shot(cell: Cell) {
         for (t in ship) {
             if (t == cell) {
-                t.marked()
+                t.shot()
                 mark += 1
-                if (!isAlive())
-                    for (t in area)
-                        t.marked()
+                if (!isAlive()) for (c in area) c.shot()
+                return
             }
         }
+
         for (t in area) {
-            if (t == cell)
-                t.marked()
+            if (t == cell) t.shot()
+            return
         }
     }
 }
