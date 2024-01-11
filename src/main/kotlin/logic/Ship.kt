@@ -3,21 +3,17 @@ package org.example.logic
 import kotlin.math.min
 import kotlin.math.max
 
-class Ship(private var ship: List<Cell>, private var area: List<Cell>) {
+class Ship(private var ship: List<Cell>, private var area: List<Cell>, private var mark: Int = 0) {
     fun isAlive(): Boolean {
-        return getMarkedShipCnt() != getLen()
+        return getLen() != mark
     }
 
     fun getLen(): Int {
         return ship.size
     }
 
-    private fun getMarkedShipCnt(): Int {
-        var res = 0
-        for (t in ship)
-            if (t.getMarked())
-                res += 1
-        return res
+    fun getMarkedShipCnt(): Int {
+        return mark
     }
 
     fun getMarkedShip(): List<Cell> {
@@ -29,11 +25,6 @@ class Ship(private var ship: List<Cell>, private var area: List<Cell>) {
     }
 
     fun getMarkedArea(): List<Cell> {
-        if (!isAlive()) {
-            for (t in area)
-                t.marked()
-            return area
-        }
         val res: List<Cell> = emptyList()
         for (t in area)
             if (t.getMarked())
@@ -64,5 +55,21 @@ class Ship(private var ship: List<Cell>, private var area: List<Cell>) {
             if (v contains t)
                 return true
         return false
+    }
+
+    fun marked(cell: Cell) {
+        for (t in ship) {
+            if (t == cell) {
+                t.marked()
+                mark += 1
+                if (!isAlive())
+                    for (t in area)
+                        t.marked()
+            }
+        }
+        for (t in area) {
+            if (t == cell)
+                t.marked()
+        }
     }
 }
