@@ -1,7 +1,5 @@
 package org.example.logic
 
-import javax.print.attribute.standard.MediaSize.Other
-
 class Cell(val x: Int, val y: Int, private var mark: Boolean = false) {
 
     fun getMarked(): Boolean {
