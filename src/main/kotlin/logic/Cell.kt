@@ -1,32 +1,27 @@
 package org.example.logic
 
+import javax.print.attribute.standard.MediaSize.Other
 
-class Cell(x: Int, y: Int) : AbstractCell(x, y) {
-    override fun toString(): String {
-        TODO("Not yet implemented")
+class Cell(val x: Int, val y: Int, private var mark: Boolean = false) {
+
+    fun getMarked(): Boolean {
+        return mark
     }
 
-    override fun equals(other: Any?): Boolean {
-        TODO("Not yet implemented")
+    fun getX(): Int {
+        return x
     }
 
-    override fun hashCode(): Int {
-        TODO("Not yet implemented")
+    fun getY(): Int {
+        return y
     }
 
-    override fun getShip(): AbstractShip? {
-        TODO("Not yet implemented")
+    fun marked() {
+        this.mark = true;
     }
 
-    override fun isEmpty(): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun makeShot() {
-        TODO("Not yet implemented")
-    }
-
-    override fun isInside(other: AbstractShip): Boolean {
-        TODO("Not yet implemented")
+    override fun equals(other: Any?): Boolean = when (other) {
+        !is Cell -> false
+        else -> x == other.x && y == other.y
     }
 }
