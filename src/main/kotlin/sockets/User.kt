@@ -10,7 +10,7 @@ class User(private val id: Int) {
         ServerSocket(port).run(socketLogic())
     }
 
-    fun socketLogic(): (ServerSocket) -> Unit {
+    private fun socketLogic(): (ServerSocket) -> Unit {
         return { it ->
             println("Server started on port ${it.localPort}")
             val client = it.accept()
@@ -20,6 +20,7 @@ class User(private val id: Int) {
                 val line = scanner.nextLine()
                 println(id)
                 println(line) // run some logic on user with id=id
+                client.getOutputStream().write("Hello, $line".toByteArray())
             }
             client.close()
         }
