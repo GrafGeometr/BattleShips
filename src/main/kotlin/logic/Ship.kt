@@ -4,27 +4,12 @@ import kotlin.math.min
 import kotlin.math.max
 
 class Ship(private var ship: List<Cell>, private var area: List<Cell>) {
-
     fun isAlive(): Boolean {
         return getMarkedShipCnt() != getLen()
     }
 
     fun getLen(): Int {
-        if (ship.isEmpty())
-            return 0
-        var x1 = ship[0].getX()
-        var x2 = ship[0].getX()
-        var y1 = ship[0].getY()
-        var y2 = ship[0].getY()
-
-        for (t in ship) {
-            x1 = min(x1, t.getX())
-            x2 = max(x2, t.getX())
-            y1 = min(y1, t.getY())
-            y2 = max(y2, t.getY())
-        }
-
-        return max(x2 - x1, y2 - y1)
+        return ship.size
     }
 
     private fun getMarkedShipCnt(): Int {
@@ -43,9 +28,9 @@ class Ship(private var ship: List<Cell>, private var area: List<Cell>) {
         return res
     }
 
-    fun getMarkedArea(): List<Cell>{
-        if(!isAlive()){
-            for(t in area)
+    fun getMarkedArea(): List<Cell> {
+        if (!isAlive()) {
+            for (t in area)
                 t.marked()
             return area
         }
@@ -73,10 +58,10 @@ class Ship(private var ship: List<Cell>, private var area: List<Cell>) {
 
     infix fun conflicts(v: Ship): Boolean {
         for (t in ship)
-            if(v contains t)
+            if (v contains t)
                 return true
         for (t in area)
-            if(v contains t)
+            if (v contains t)
                 return true
         return false
     }

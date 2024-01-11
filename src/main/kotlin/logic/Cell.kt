@@ -1,17 +1,8 @@
 package org.example.logic
 
 class Cell(val x: Int, val y: Int, private var mark: Boolean = false) {
-
     fun getMarked(): Boolean {
         return mark
-    }
-
-    fun getX(): Int {
-        return x
-    }
-
-    fun getY(): Int {
-        return y
     }
 
     fun marked() {
