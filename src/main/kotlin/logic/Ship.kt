@@ -23,9 +23,13 @@ class Ship(
         return getSize() != mark
     }
 
+    fun isNotAlive(): Boolean = !isAlive()
+
     fun getSize(): Int = ship.size
 
     fun getMarkedCellsCount(): Int = mark
+
+    fun getCells(): List<Cell> = ship
 
     fun getMarkedCells(): List<Cell> = ship.filter { cell -> cell.isMarked() }
 
