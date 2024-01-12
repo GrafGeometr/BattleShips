@@ -1,12 +1,12 @@
 package org.example.logic
 
-class Game(board1: Board = Board(), board2: Board = Board(), who_user_move: Int = 0) {
+class Game(board1: Board = Board(), board2: Board = Board(), whoUserMove: Int = 0) {
     private var boards: MutableList<Board> = mutableListOf(board1, board2)
-    private var who_move = who_user_move // 0 or 1
+    private var whoMove = whoUserMove // 0 or 1
     private var run = false
 
     fun getWhoMove(): Int {
-        return who_move
+        return whoMove
     }
 
     fun gameRunning(): Boolean {
