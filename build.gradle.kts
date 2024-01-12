@@ -1,5 +1,8 @@
+import com.saveourtool.diktat.plugin.gradle.DiktatGradlePlugin
+
 plugins {
     kotlin("jvm") version "1.9.21"
+    id("com.saveourtool.diktat") version "2.0.0"
 }
 
 group = "org.example"
@@ -19,4 +22,8 @@ tasks.test {
 }
 kotlin {
     jvmToolchain(21)
+}
+
+allprojects {
+    apply<DiktatGradlePlugin>()
 }

@@ -12,7 +12,6 @@ class CellTest {
         assert(cell.isMarked())
     }
 
-
     @Test
     fun testEquals() {
         assert(Cell(1, 2) == Cell(1, 2))

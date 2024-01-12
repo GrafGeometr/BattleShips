@@ -4,6 +4,9 @@ import java.net.ServerSocket
 import java.net.Socket
 import java.util.Scanner
 
+/**
+ * @property id
+ */
 class User(internal val id: Int) {
     private var server: ServerSocket? = null
     private var client: Socket? = null
@@ -15,7 +18,10 @@ class User(internal val id: Int) {
             else -> other.id == id
         }
 
-    fun startListening(port: Int) {
+    /**
+     * @param port
+     */
+    fun connectToServer(port: Int) {
         server = ServerSocket(port)
         println("Server started on port ${server?.localPort}")
         client = server?.accept()
@@ -27,16 +33,23 @@ class User(internal val id: Int) {
         scanner = client?.getInputStream()?.let { Scanner(it) }
     }
 
+    /**
+     * @param message
+     */
     fun sendMessage(message: String) {
         client?.getOutputStream()?.write(message.toByteArray())
         client?.getOutputStream()?.flush()
     }
 
-    override fun hashCode(): Int {
-        return id
-    }
+    override fun hashCode(): Int = id
 }
 
+/**
+ * @return
+ */
 fun User?.hasMessage(): Boolean = this?.scanner?.hasNext() ?: false
 
+/**
+ * @return
+ */
 fun User?.getMessage(): String? = this?.scanner?.next()

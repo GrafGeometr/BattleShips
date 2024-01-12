@@ -6,7 +6,7 @@ import kotlin.test.Test
 
 class ShipTest {
     @Test
-    fun constructorFromCoordinatesTestCells_1() {
+    fun constructorFromCoordinatesTestCells1() {
         val ship = Ship(0, 0, 0, 0)
         assert(Cell(0, 0) in ship.getCells())
         assert(Cell(1, 1) !in ship.getCells())
@@ -15,7 +15,7 @@ class ShipTest {
     }
 
     @Test
-    fun constructorFromCoordinatesTestArea_1() {
+    fun constructorFromCoordinatesTestArea1() {
         val ship = Ship(0, 0, 0, 0)
         assert(Cell(0, 0) !in ship.getArea())
 
@@ -32,8 +32,8 @@ class ShipTest {
     }
 
     @Test
-    fun constructorFromCoordinatesTestCells_2() {
-        val ship = Ship(0, 0, 1, 0) // (0, 0) (1, 0)
+    fun constructorFromCoordinatesTestCells2() {
+        val ship = Ship(0, 0, 1, 0)  // (0, 0) (1, 0)
 
         assert(Cell(0, 0) in ship.getCells())
         assert(Cell(1, 0) in ship.getCells())
