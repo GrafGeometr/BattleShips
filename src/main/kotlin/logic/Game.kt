@@ -1,15 +1,9 @@
 package org.example.logic
 
-class Game {
-    private var boards: MutableList<Board> = mutableListOf(Board(), Board())
-    private var who_move = 0 // 0 or 1
+class Game(board1: Board = Board(), board2: Board = Board(), who_user_move: Int = 0) {
+    private var boards: MutableList<Board> = mutableListOf(board1, board2)
+    private var who_move = who_user_move // 0 or 1
     private var run = false
-
-    constructor(board1: Board, board2: Board, who_move: Int = 0) {
-        boards[0] = board1
-        boards[1] = board2
-        this.who_move = who_move
-    }
 
     fun getWhoMove(): Int {
         return who_move
