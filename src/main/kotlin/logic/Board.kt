@@ -8,6 +8,7 @@ class Board(
     private var misses: List<Cell> = emptyList(),
 ) {
     private val size = 10
+    private var aliveShips = 10
 
     constructor(field: Array<Array<Boolean>>) : this() {
 
@@ -94,5 +95,48 @@ class Board(
                 }
             }
         }
+    }
+
+    fun isAlive(): Boolean = aliveShips != 0
+    fun isLose(): Boolean = aliveShips == 0
+
+    fun getAliveShipsCount(): Int {
+        var res = 0
+        for (t in ships)
+            if (t.isAlive())
+                res += 1
+        return res
+    }
+
+    fun getShips(): List<Ship> = ships
+
+    fun getAliveShips(): List<Ship> {
+        val res: List<Ship> = emptyList()
+        for (t in ships)
+            if (t.isAlive())
+                res.addLast(t)
+        return res
+    }
+
+    fun getDestroyedShips(): List<Ship> {
+        val res: List<Ship> = emptyList()
+        for (t in ships)
+            if (!t.isAlive())
+                res.addLast(t)
+        return res
+    }
+
+    fun shot(cell: Cell) {
+        var ok = false
+        for (t in ships) {
+            if (t.contains(cell) || t.containsArea(cell)) {
+                ok = true
+                if (t.shot(cell) && !t.isAlive())
+                    aliveShips -= 1
+            }
+        }
+        if (ok)
+            return
+        misses.addLast(cell)
     }
 }

@@ -37,24 +37,29 @@ class Ship(
 
     fun contains(x: Int, y: Int): Boolean = contains(Cell(x, y))
 
+    fun containsArea(x: Int, y: Int): Boolean = area.contains(Cell(x, y))
+
     infix fun contains(cell: Cell): Boolean = ship.contains(cell)
+
+    infix fun containsArea(cell: Cell): Boolean = area.contains(cell)
 
     infix fun conflicts(v: Ship): Boolean =
         allCells().any { cell -> v contains cell }
 
-    fun shot(cell: Cell) {
+    fun shot(cell: Cell): Boolean {
         for (t in ship) {
-            if (t == cell) {
+            if (t == cell && !t.isMarked()) {
                 t.shot()
                 mark += 1
                 if (!isAlive()) for (c in area) c.shot()
-                return
+                return true
             }
         }
 
         for (t in area) {
             if (t == cell) t.shot()
-            return
+            return false
         }
+        return false
     }
 }
