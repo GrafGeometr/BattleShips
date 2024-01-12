@@ -1,6 +1,6 @@
 package org.example.logic
 
-class Game(board1: Board = Board(), board2: Board = Board(), private var whoMoves: Int) {
+class Game(board1: Board = Board(), board2: Board = Board(), private var whoMoves: Int = 0) {
     private var boards: MutableList<Board> = mutableListOf(board1, board2)
     private var run = false
 
