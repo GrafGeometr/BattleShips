@@ -15,9 +15,7 @@ class Ship(
         }
     }
 
-
     private fun allCells(): List<Cell> = ship + area
-
 
     fun isAlive(): Boolean {
         return getSize() != mark
@@ -35,9 +33,15 @@ class Ship(
 
     fun getMarkedArea(): List<Cell> = area.filter { cell -> cell.isMarked() }
 
-    fun contains(x: Int, y: Int): Boolean = contains(Cell(x, y))
+    fun contains(
+        x: Int,
+        y: Int,
+    ): Boolean = contains(Cell(x, y))
 
-    fun containsArea(x: Int, y: Int): Boolean = area.contains(Cell(x, y))
+    fun containsArea(
+        x: Int,
+        y: Int,
+    ): Boolean = area.contains(Cell(x, y))
 
     infix fun contains(cell: Cell): Boolean = ship.contains(cell)
 
@@ -62,4 +66,6 @@ class Ship(
         }
         return false
     }
+
+    fun getArea(): List<Cell> = area
 }

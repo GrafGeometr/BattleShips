@@ -1,7 +1,6 @@
 package org.example.logic
 
-import java.util.*
-
+import java.util.Random
 
 class Board(
     private var ships: List<Ship> = emptyList(),
@@ -29,9 +28,10 @@ class Board(
     }
 
     fun showString(): String {
-        val array = Array(size) {
-            Array(size) { "-" }
-        }
+        val array =
+            Array(size) {
+                Array(size) { "-" }
+            }
         for (ship in ships) {
             for (cell in ship.getMarkedArea()) array[cell.y][cell.x] = "*"
             for (cell in ship.getMarkedCells()) array[cell.y][cell.x] = "X"
@@ -43,9 +43,10 @@ class Board(
     }
 
     fun showStringDetailed(): String {
-        val array = Array(size) {
-            Array(size) { "-" }
-        }
+        val array =
+            Array(size) {
+                Array(size) { "-" }
+            }
         for (ship in ships) {
             for (cell in ship.getCells()) array[cell.y][cell.x] = "S"
             for (cell in ship.getMarkedArea()) array[cell.y][cell.x] = "*"
@@ -67,37 +68,49 @@ class Board(
 
     fun locateShipsRandomly() {
         ships = emptyList()
-        val sizes = intArrayOf(4, 3, 3, 2, 2, 2, 1, 1, 1, 1)
-        var idx = 0
-        while (true) {
-            val shipSize = sizes[idx]
-            ships += when {
-                Random().nextBoolean() -> {
-                    val x = Random().nextInt(size)
-                    val y = Random().nextInt(size - shipSize)
-                    Ship(x, y, x, y + shipSize - 1)
+
+        val shipSizes = intArrayOf(4, 3, 3, 2, 2, 2, 1, 1, 1, 1)
+        var shipIndex = 0
+
+        val random = Random()
+        while (shipIndex < shipSizes.size) {
+            val shipSize = shipSizes[shipIndex]
+            val ship =
+                if (random.nextBoolean()) {
+                    placeShipHorizontally(shipSize)
+                } else {
+                    placeShipVertically(shipSize)
                 }
 
-                else -> {
-                    val x = Random().nextInt(size - shipSize)
-                    val y = Random().nextInt(size)
-                    Ship(x, y, x + shipSize - 1, y)
-                }
-            }
             if (checkNoShipsCollisions()) {
-                idx++
-                if (idx == sizes.size) break
+                ships += ship
+                shipIndex++
             } else {
-                // ships has at least 2 elements
-                ships.run {
-                    removeLast()
-                    if (Random().nextBoolean()) removeLast().also { idx-- }
+                if (ships.size >= 2) {
+                    ships.removeLast()
+                    if (random.nextBoolean()) {
+                        ships.removeLast()
+                        shipIndex--
+                    }
                 }
             }
         }
     }
 
+    private fun placeShipVertically(shipSize: Int): Ship {
+        val x = Random().nextInt(size)
+        val y = Random().nextInt(size - shipSize)
+        return Ship(x, y, x, y + shipSize - 1)
+    }
+
+    private fun placeShipHorizontally(shipSize: Int): Ship {
+        val x = Random().nextInt(size - shipSize)
+        val y = Random().nextInt(size)
+        return Ship(x, y, x + shipSize - 1, y)
+    }
+
     fun isAlive(): Boolean = aliveShips != 0
+
     fun gameIsLost(): Boolean = aliveShips == 0
 
     fun getAliveShipsCount(): Int = getAliveShips().size
@@ -113,12 +126,14 @@ class Board(
         for (t in ships) {
             if (t.contains(cell) || t.containsArea(cell)) {
                 ok = true
-                if (t.shot(cell) && !t.isAlive())
+                if (t.shot(cell) && !t.isAlive()) {
                     aliveShips -= 1
+                }
             }
         }
-        if (ok)
+        if (ok) {
             return
+        }
         misses.addLast(cell)
     }
 }

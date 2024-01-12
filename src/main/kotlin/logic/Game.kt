@@ -1,30 +1,34 @@
 package org.example.logic
 
-class Game(board1: Board = Board(), board2: Board = Board(), private var whoMoves: Int = 0) {
-    private var boards: MutableList<Board> = mutableListOf(board1, board2)
+class Game(
+    player1Board: Board = Board(),
+    player2Board: Board = Board(),
+    private var currentPlayer: Int = 0,
+    private var playerBoards: MutableList<Board> = mutableListOf(
+        player1Board, player2Board
+    ),
+) {
     private var run = false
 
-    fun getWhoMove(): Int = whoMoves
+    fun getCurrentPlayer(): Int = currentPlayer
 
-    fun gameRunning(): Boolean = run
+    fun isGameRunning(): Boolean = run
 
-    fun isWin(user: Int): Boolean = boards[user xor 1].gameIsLost()
+    fun isUserWin(user: Int): Boolean = playerBoards[user xor 1].gameIsLost()
 
-    fun isLose(user: Int): Boolean = boards[user].gameIsLost()
+    fun isUserLose(user: Int): Boolean = playerBoards[user].gameIsLost()
 
     // Это значит, что текущий игрок стреляет в ячейку cell, которая, конечно же, попадает по полю противника
-    fun makeShot(cell: Cell, user: Int) {
-        if (user != whoMoves)
-            return
-        boards[user xor 1].shot(cell)
-        if (isLose(user))
-            run = false
-        whoMoves = whoMoves xor 1
+    fun makeShot(cell: Cell, player: Int) {
+        if (player != currentPlayer) return
+        playerBoards[player xor 1].shot(cell)
+        if (isUserLose(player)) run = false
+        currentPlayer = currentPlayer xor 1
     }
 
     fun getBoard(user: Int, detail: Boolean = false): String = when {
-        detail -> boards[user].showStringDetailed()
-        else -> boards[user].showString()
+        detail -> playerBoards[user].showStringDetailed()
+        else -> playerBoards[user].showString()
     }
 
     fun startGame(): Boolean = run
