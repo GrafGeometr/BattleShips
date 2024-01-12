@@ -98,33 +98,15 @@ class Board(
     }
 
     fun isAlive(): Boolean = aliveShips != 0
-    fun isLose(): Boolean = aliveShips == 0
+    fun gameIsLost(): Boolean = aliveShips == 0
 
-    fun getAliveShipsCount(): Int {
-        var res = 0
-        for (t in ships)
-            if (t.isAlive())
-                res += 1
-        return res
-    }
+    fun getAliveShipsCount(): Int = getAliveShips().size
 
     fun getShips(): List<Ship> = ships
 
-    fun getAliveShips(): List<Ship> {
-        val res: List<Ship> = emptyList()
-        for (t in ships)
-            if (t.isAlive())
-                res.addLast(t)
-        return res
-    }
+    fun getAliveShips(): List<Ship> = ships.filter { ship -> ship.isAlive() }
 
-    fun getDestroyedShips(): List<Ship> {
-        val res: List<Ship> = emptyList()
-        for (t in ships)
-            if (!t.isAlive())
-                res.addLast(t)
-        return res
-    }
+    fun getDestroyedShips(): List<Ship> = ships.filter { ship -> !ship.isAlive() }
 
     fun shot(cell: Cell) {
         var ok = false
