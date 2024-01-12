@@ -23,7 +23,7 @@ class Game(board1: Board = Board(), board2: Board = Board(), whoUserMove: Int = 
 
     // Это значит, что текущий игрок стреляет в ячейку cell, которая, конечно же, попадает по полю противника
     fun shotUser(cell: Cell, user: Int) {
-        if (user != who_move)
+        if (user != whoMove)
             return
         boards[user xor 1].shot(cell)
         if (isLose(user))
