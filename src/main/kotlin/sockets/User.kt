@@ -2,7 +2,7 @@ package org.example.sockets
 
 import java.net.ServerSocket
 import java.net.Socket
-import java.util.Scanner
+import java.util.*
 
 /**
  * @property id
@@ -37,7 +37,8 @@ class User(internal val id: Int) {
      * @param message
      */
     fun sendMessage(message: String) {
-        client?.getOutputStream()?.write(message.toByteArray())
+        println(message)
+        client?.getOutputStream()?.write((message + "\n").toByteArray())
         client?.getOutputStream()?.flush()
     }
 
@@ -45,11 +46,11 @@ class User(internal val id: Int) {
 }
 
 /**
- * @return
+ * @return true if user has message and false otherwise
  */
 fun User?.hasMessage(): Boolean = this?.scanner?.hasNext() ?: false
 
 /**
- * @return
+ * @return user message or null
  */
 fun User?.getMessage(): String? = this?.scanner?.next()

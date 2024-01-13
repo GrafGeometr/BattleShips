@@ -29,6 +29,9 @@ class Ship(
         }
     }
 
+    /**
+     * @return all cells of the ship
+     */
     private fun allCells(): List<Cell> = ship + area
 
     /**
@@ -134,10 +137,12 @@ class Ship(
             if (areaCell == cell) {
                 areaCell.shot()
             }
-            return false
         }
         return false
     }
 
+    /**
+     * @return cells of the ship area
+     */
     fun getArea(): List<Cell> = area
 }

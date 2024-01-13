@@ -7,8 +7,8 @@ import java.util.*
  * @param misses
  */
 class Board(
-    private var ships: List<Ship> = emptyList(),
-    private var misses: List<Cell> = emptyList(),
+    private var ships: MutableList<Ship> = mutableListOf(),
+    private var misses: MutableList<Cell> = mutableListOf(),
 ) {
     private val size = 10
     private var aliveShips = 10
@@ -20,7 +20,7 @@ class Board(
     fun locateShips(field: Array<Array<Boolean>>): Boolean {
         // TODO return false if cells are incorrect...
         (4 downTo 1).forEach { shipSize ->
-            // horizontal ship
+            // vertical ship
             for (y in 0 ..< size) {
                 for (x in 0 ..< size - shipSize) {
                     if ((0 ..< shipSize).all { field[x + it][y] }) {
@@ -28,7 +28,7 @@ class Board(
                     }
                 }
             }
-            // vertical ship
+            // horizontal ship
             for (x in 0 ..< size) {
                 for (y in 0 ..< size - shipSize) {
                     if ((0 ..< shipSize).all { field[x][y + it] }) {
@@ -113,7 +113,7 @@ class Board(
      * @return resulting board
      */
     fun locateShipsRandomly(): Board {
-        ships = emptyList()
+        ships = mutableListOf()
 
         val shipSizes = intArrayOf(4, 3, 3, 2, 2, 2, 1, 1, 1, 1)
         var shipIndex = 0
