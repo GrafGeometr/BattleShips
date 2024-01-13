@@ -48,11 +48,18 @@ class Board(
             Array(size) { "-" }
         }
         for (ship in ships) {
-            for (cell in ship.getMarkedArea()) {
-                array[cell.y][cell.x] = "*"
-            }
-            for (cell in ship.getMarkedCells()) {
-                array[cell.y][cell.x] = "X"
+            if (!ship.isAlive()) {
+                for (cell in ship.getCells())
+                    array[cell.y][cell.x] = "D"
+                for (cell in ship.getArea())
+                    array[cell.y][cell.x] = "*"
+            } else {
+                for (cell in ship.getMarkedArea()) {
+                    array[cell.y][cell.x] = "*"
+                }
+                for (cell in ship.getMarkedCells()) {
+                    array[cell.y][cell.x] = "X"
+                }
             }
         }
         for (miss in misses) {
@@ -71,15 +78,21 @@ class Board(
             Array(size) { "-" }
         }
         for (ship in ships) {
-            // TODO display dead ships differently
-            for (cell in ship.getCells()) {
-                array[cell.y][cell.x] = "S"
-            }
-            for (cell in ship.getMarkedArea()) {
-                array[cell.y][cell.x] = "*"
-            }
-            for (cell in ship.getMarkedCells()) {
-                array[cell.y][cell.x] = "X"
+            if (!ship.isAlive()) {
+                for (cell in ship.getCells())
+                    array[cell.y][cell.x] = "D"
+                for (cell in ship.getArea())
+                    array[cell.y][cell.x] = "*"
+            } else {
+                for (cell in ship.getCells()) {
+                    array[cell.y][cell.x] = "S"
+                }
+                for (cell in ship.getMarkedArea()) {
+                    array[cell.y][cell.x] = "*"
+                }
+                for (cell in ship.getMarkedCells()) {
+                    array[cell.y][cell.x] = "X"
+                }
             }
         }
         for (miss in misses) {
