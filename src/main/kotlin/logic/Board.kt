@@ -21,17 +21,17 @@ class Board(
         // TODO return false if cells are incorrect...
         (4 downTo 1).forEach { shipSize ->
             // horizontal ship
-            for (y in 0 ..< size) {
-                for (x in 0 ..< size - shipSize) {
-                    if ((0 ..< shipSize).all { field[x + it][y] }) {
+            for (y in 0..<size) {
+                for (x in 0..<size - shipSize) {
+                    if ((0..<shipSize).all { field[x + it][y] }) {
                         ships += Ship(x, y, x + shipSize - 1, y)
                     }
                 }
             }
             // vertical ship
-            for (x in 0 ..< size) {
-                for (y in 0 ..< size - shipSize) {
-                    if ((0 ..< shipSize).all { field[x][y + it] }) {
+            for (x in 0..<size) {
+                for (y in 0..<size - shipSize) {
+                    if ((0..<shipSize).all { field[x][y + it] }) {
                         ships += Ship(x, y, x, y + shipSize - 1)
                     }
                 }
@@ -48,11 +48,18 @@ class Board(
             Array(size) { "-" }
         }
         for (ship in ships) {
-            for (cell in ship.getMarkedArea()) {
-                array[cell.y][cell.x] = "*"
-            }
-            for (cell in ship.getMarkedCells()) {
-                array[cell.y][cell.x] = "X"
+            if (!ship.isAlive()) {
+                for (cell in ship.getCells())
+                    array[cell.y][cell.x] = "D"
+                for (cell in ship.getArea())
+                    array[cell.y][cell.x] = "*"
+            } else {
+                for (cell in ship.getMarkedArea()) {
+                    array[cell.y][cell.x] = "*"
+                }
+                for (cell in ship.getMarkedCells()) {
+                    array[cell.y][cell.x] = "X"
+                }
             }
         }
         for (miss in misses) {
@@ -71,15 +78,21 @@ class Board(
             Array(size) { "-" }
         }
         for (ship in ships) {
-            // TODO display dead ships differently
-            for (cell in ship.getCells()) {
-                array[cell.y][cell.x] = "S"
-            }
-            for (cell in ship.getMarkedArea()) {
-                array[cell.y][cell.x] = "*"
-            }
-            for (cell in ship.getMarkedCells()) {
-                array[cell.y][cell.x] = "X"
+            if (!ship.isAlive()) {
+                for (cell in ship.getCells())
+                    array[cell.y][cell.x] = "D"
+                for (cell in ship.getArea())
+                    array[cell.y][cell.x] = "*"
+            } else {
+                for (cell in ship.getCells()) {
+                    array[cell.y][cell.x] = "S"
+                }
+                for (cell in ship.getMarkedArea()) {
+                    array[cell.y][cell.x] = "*"
+                }
+                for (cell in ship.getMarkedCells()) {
+                    array[cell.y][cell.x] = "X"
+                }
             }
         }
         for (miss in misses) {
